@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:go_router_learn/routes/pages.dart';
+import 'data/repository/auth_repo.dart';
+import 'routes/pages.dart';
 
+final authRepo = AuthRepo();
 void main() {
+  authRepo.authStateChanges.listen(
+    (user) {
+      print('user state chnages');
+      router.refresh();
+    },
+  );
   runApp(const MainApp());
 }
 

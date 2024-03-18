@@ -1,9 +1,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
-import 'package:go_router_learn/pages/login_page.dart';
-import 'package:go_router_learn/pages/profile_page.dart';
-import 'package:go_router_learn/pages/splash_page.dart';
-import 'package:go_router/go_router.dart';
+import '../main.dart';
+import '../pages/login_page.dart';
+import '../pages/profile_page.dart';
+import '../pages/splash_page.dart';
+
 part 'routes.g.dart';
 
 @TypedGoRoute<SplashRoute>(path: '/')
@@ -22,11 +23,12 @@ class LoginRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) => const LoginPage();
 }
 
-@TypedGoRoute<ProfileRoute>(path: '/profile')
+@TypedGoRoute<ProfileRoute>(path: '/profile/:id')
 class ProfileRoute extends GoRouteData {
   const ProfileRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) =>
-      const ProfilePage();
+  Widget build(BuildContext context, GoRouterState state) => ProfilePage(
+        user: authRepo.currentUser!,
+      );
 }

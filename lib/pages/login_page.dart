@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-class Page2 extends StatelessWidget {
-  const Page2({super.key});
+class LoginPage extends StatelessWidget {
+  const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(),
-        body: Center(
-          child: Text('Page2'),
+        body: const Center(
+          child: Text('LoginPage'),
         ));
   }
 }

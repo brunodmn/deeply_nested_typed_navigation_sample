@@ -14,12 +14,13 @@ final router = GoRouter(
       builder: (context, state) => const Page0(),
     ),
     GoRoute(
-      path: Routes.page1,
-      builder: (context, state) => const Page1(),
-    ),
-    GoRoute(
-      path: Routes.page2,
-      builder: (context, state) => const Page2(),
-    ),
+        path: Routes.page1,
+        builder: (context, state) => const Page1(),
+        routes: [
+          GoRoute(
+            path: Routes.page2,
+            builder: (context, state) => const Page2(),
+          ),
+        ]),
   ],
 );

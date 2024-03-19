@@ -27,22 +27,18 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(),
-        body: Center(
-          child: Column(
-            children: [
-              LoadingButton(
-                onPressed: () => logout(),
-                label: 'logout',
-                isLoading: isLoading,
-              ),
-              const Text('ProfilePage'),
-              Text('id: ${widget.user.id}'),
-              Text('name: ${widget.user.name}'),
-              Text('age: ${widget.user.age}'),
-            ],
-          ),
-        ));
+    return Column(
+      children: [
+        LoadingButton(
+          onPressed: () => logout(),
+          label: 'logout',
+          isLoading: isLoading,
+        ),
+        const Text('ProfilePage'),
+        Text('id: ${widget.user.id}'),
+        Text('name: ${widget.user.name}'),
+        Text('age: ${widget.user.age}'),
+      ],
+    );
   }
 }

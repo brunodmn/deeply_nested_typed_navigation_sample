@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
-import 'package:go_router_learn/pages/root/home_page.dart';
+import 'package:go_router_learn/pages/home/home_page.dart';
 import '../pages/home/widgets/layout_page.dart';
 import '../main.dart';
 import '../pages/root/login_page.dart';

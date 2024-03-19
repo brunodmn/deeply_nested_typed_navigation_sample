@@ -29,9 +29,23 @@ class _LayoutPageState extends State<LayoutPage> {
       // using the initialLocation parameter of goBranch.
       initialLocation: index == widget.navigationShell.currentIndex,
     );
-    setState(() {
-      _selectedIndex = index;
-    });
+    // setState(() {
+    //   _selectedIndex = index;
+    // });
+  }
+
+  /// this function reads the routename, if is same as menu item, change state of selected index
+  /// this will force menu to be selected
+  void setSelectedIndex() {
+    final fullPath = GoRouterState.of(context).fullPath;
+    final routeName = fullPath?.split('/')[1] ?? '';
+    final routeIndex = menuItems
+        .indexWhere((element) => element.name.toLowerCase() == routeName);
+    if (routeIndex > -1) {
+      setState(() {
+        _selectedIndex = routeIndex;
+      });
+    }
   }
 
   // bellow snippet enable horizontal scroll if screen is less than minWidth
@@ -57,6 +71,7 @@ class _LayoutPageState extends State<LayoutPage> {
   //     ));
   @override
   Widget build(BuildContext context) {
+    setSelectedIndex();
     final theme = Theme.of(context);
     final isSmallScreen = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
     return Scaffold(

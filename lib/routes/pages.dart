@@ -4,16 +4,16 @@ import 'routes.dart';
 
 // GoRouter configuration
 final router = GoRouter(
-  initialLocation: '/',
+  initialLocation: '/home',
   redirect: (context, state) {
     final user = authRepo.currentUser;
     if (user == null) {
       // necessary or navitagion will skip splash screen
       if (state.fullPath == '/') return null;
-      return '/login';
+      return const LoginRoute().location;
     } else {
       if (state.fullPath == '/' || state.fullPath == '/login') {
-        return '/profile';
+        return const HomeRoute().location;
       }
       return null; // return "null" to display the intended route without redirecting
     }

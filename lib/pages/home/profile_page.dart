@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../data/global_widgets/loading_button.dart';
-import '../main.dart';
-import '../data/models/user.dart';
+import '../../data/global_widgets/loading_button.dart';
+import '../../main.dart';
+import '../../data/models/user.dart';
 
 class ProfilePage extends StatefulWidget {
   final User user;

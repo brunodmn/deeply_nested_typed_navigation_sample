@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../data/global_widgets/loading_button.dart';
-import '../main.dart';
+import '../../data/global_widgets/loading_button.dart';
+import '../../main.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -30,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
         body: Center(
           child: Column(
             children: [
-              Text('LoginPage'),
+              const Text('LoginPage'),
               LoadingButton(
                 onPressed: () => login(),
                 label: 'login',

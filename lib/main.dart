@@ -6,7 +6,6 @@ final authRepo = AuthRepo();
 void main() {
   authRepo.authStateChanges.listen(
     (user) {
-      print('user state chnages');
       router.refresh();
     },
   );

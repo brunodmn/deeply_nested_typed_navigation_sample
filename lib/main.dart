@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+
 import 'data/repository/auth_repo.dart';
 import 'routes/pages.dart';
 
 final authRepo = AuthRepo();
 void main() {
+  usePathUrlStrategy();
   authRepo.authStateChanges.listen(
     (user) {
       router.refresh();
@@ -19,6 +22,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      title: "ISPJet",
       routerConfig: router,
       builder: (context, child) => ResponsiveBreakpoints.builder(
         child: child!,

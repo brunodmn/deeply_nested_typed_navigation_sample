@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:go_router_learn/data/models/menu_item.dart';
+import '../../../data/models/menu_item.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class LayoutPage extends StatefulWidget {
@@ -13,7 +13,7 @@ class LayoutPage extends StatefulWidget {
 
 class _LayoutPageState extends State<LayoutPage> {
   int _selectedIndex = 0;
-
+  String previousRoutePath = '';
   final menuItems = <MenuItem>[
     MenuItem(index: 0, name: 'Home', iconData: Icons.dashboard),
     MenuItem(index: 1, name: 'Settings', iconData: Icons.settings),
@@ -36,16 +36,37 @@ class _LayoutPageState extends State<LayoutPage> {
 
   /// this function reads the routename, if is same as menu item, change state of selected index
   /// this will force menu to be selected
-  void setSelectedIndex() {
+  void navigationUtils(BuildContext context) {
+    String tmpPreviousRoutePath = '';
+
     final fullPath = GoRouterState.of(context).fullPath;
-    final routeName = fullPath?.split('/')[1] ?? '';
-    final routeIndex = menuItems
-        .indexWhere((element) => element.name.toLowerCase() == routeName);
-    if (routeIndex > -1) {
-      setState(() {
-        _selectedIndex = routeIndex;
-      });
+
+    final fullPathSplited = fullPath?.split('/') ?? [];
+
+    // bellow snipped is responsible to select the right item on menu
+    if (fullPathSplited.length >= 2) {
+      final routeName = fullPathSplited[1];
+
+      final routeIndex = menuItems
+          .indexWhere((element) => element.name.toLowerCase() == routeName);
+
+      if (routeIndex > -1) {
+        setState(() {
+          _selectedIndex = routeIndex;
+        });
+      }
     }
+
+    // bellow snipped enable back button on subroutes, instead of drawer SMALL SCREENS ONLY
+    if (fullPathSplited.length > 2) {
+      final pos = fullPath?.lastIndexOf('/') ?? -1;
+      if (pos > -1) {
+        tmpPreviousRoutePath = fullPath!.substring(0, pos);
+      }
+    }
+    setState(() {
+      previousRoutePath = tmpPreviousRoutePath;
+    });
   }
 
   // bellow snippet enable horizontal scroll if screen is less than minWidth
@@ -71,11 +92,24 @@ class _LayoutPageState extends State<LayoutPage> {
   //     ));
   @override
   Widget build(BuildContext context) {
-    setSelectedIndex();
+    navigationUtils(context);
     final theme = Theme.of(context);
     final isSmallScreen = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
+    final curName = GoRouterState.of(context).fullPath?.split('/').last ?? '';
+
     return Scaffold(
-      appBar: !isSmallScreen ? null : AppBar(),
+      appBar: !isSmallScreen
+          ? null
+          : AppBar(
+              leading: previousRoutePath.isEmpty
+                  ? null
+                  : BackButton(onPressed: () => context.go(previousRoutePath)),
+              title: Row(
+                children: [
+                  Text(curName.toUpperCase()),
+                ],
+              ),
+            ),
       drawer: !isSmallScreen
           ? null
           : Drawer(
@@ -106,6 +140,7 @@ class _LayoutPageState extends State<LayoutPage> {
                         label: Text(item.name),
                       )),
                 ]),
+          const VerticalDivider(),
           // This is the main content.
           Expanded(
               child: Container(

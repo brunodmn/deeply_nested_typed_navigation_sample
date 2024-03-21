@@ -13,6 +13,8 @@ part 'routes.g.dart';
 
 final GlobalKey<NavigatorState> _shellNavigatorKey =
     GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> _shelSettingsNavigatorKey =
+    GlobalKey<NavigatorState>();
 
 //! ROOT - SPLASH ROUTE
 @TypedGoRoute<SplashRoute>(path: '/')
@@ -43,10 +45,16 @@ class LoginRoute extends GoRouteData {
       ],
     ),
     TypedStatefulShellBranch<SettingsBranch>(
-      routes: <TypedGoRoute<GoRouteData>>[
-        TypedGoRoute<SettingsRoute>(
-          path: '/settings',
-        ),
+      routes: [
+        TypedStatefulShellRoute<SettingsShellRoute>(branches: [
+          TypedStatefulShellBranch<GeneralBranch>(
+              routes: [TypedGoRoute<GeneralRoute>(path: '/settings/general')]),
+          TypedStatefulShellBranch<BillingBranch>(
+              routes: [TypedGoRoute<BillingRoute>(path: '/settings/billing')]),
+          TypedStatefulShellBranch<NotificationsBranch>(routes: [
+            TypedGoRoute<NotificationsRoute>(path: '/settings/notifications')
+          ]),
+        ])
       ],
     ),
     TypedStatefulShellBranch<ProfileBranch>(
@@ -72,6 +80,66 @@ class HomeShellRoute extends StatefulShellRouteData {
   }
 }
 
+class SettingsShellRoute extends StatefulShellRouteData {
+  const SettingsShellRoute();
+  // static final GlobalKey<NavigatorState> $parentNavigatorKey =
+  //     _shellNavigatorKey;
+  static final GlobalKey<NavigatorState> $navigatorKey =
+      _shelSettingsNavigatorKey;
+
+  @override
+  Widget builder(BuildContext context, GoRouterState state,
+      StatefulNavigationShell navigationShell) {
+    return SettingsPage(navigationShell: navigationShell);
+  }
+}
+
+//* TAB GENERAL
+class GeneralBranch extends StatefulShellBranchData {
+  const GeneralBranch();
+}
+
+class GeneralRoute extends GoRouteData {
+  const GeneralRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) => Container(
+        alignment: Alignment.center,
+        child: const Text('GeneralRoute'),
+      );
+}
+
+//* TAB Billing
+class BillingBranch extends StatefulShellBranchData {
+  const BillingBranch();
+}
+
+class BillingRoute extends GoRouteData {
+  const BillingRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) => Container(
+        alignment: Alignment.center,
+        child: const Text('Billing'),
+      );
+}
+
+//* TAB Notifications
+class NotificationsBranch extends StatefulShellBranchData {
+  const NotificationsBranch();
+}
+
+class NotificationsRoute extends GoRouteData {
+  const NotificationsRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) => Container(
+        alignment: Alignment.center,
+        child: const Text('Notifications'),
+      );
+}
+
+// TAB BILLING
 //* branchs
 class HomeBranch extends StatefulShellBranchData {
   const HomeBranch();
@@ -93,13 +161,13 @@ class HomeRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) => const HomePage();
 }
 
-class SettingsRoute extends GoRouteData {
-  const SettingsRoute();
+// class SettingsRoute extends GoRouteData {
+//   const SettingsRoute();
 
-  @override
-  Widget build(BuildContext context, GoRouterState state) =>
-      const SettingsPage();
-}
+//   @override
+//   Widget build(BuildContext context, GoRouterState state) =>
+//       const SettingsPage();
+// }
 
 class ProfileRoute extends GoRouteData {
   const ProfileRoute();

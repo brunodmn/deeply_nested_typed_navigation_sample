@@ -75,9 +75,34 @@ RouteBase get $homeShellRoute => StatefulShellRouteData.$route(
         ),
         StatefulShellBranchData.$branch(
           routes: [
-            GoRouteData.$route(
-              path: '/settings',
-              factory: $SettingsRouteExtension._fromState,
+            StatefulShellRouteData.$route(
+              factory: $SettingsShellRouteExtension._fromState,
+              branches: [
+                StatefulShellBranchData.$branch(
+                  routes: [
+                    GoRouteData.$route(
+                      path: '/settings/general',
+                      factory: $GeneralRouteExtension._fromState,
+                    ),
+                  ],
+                ),
+                StatefulShellBranchData.$branch(
+                  routes: [
+                    GoRouteData.$route(
+                      path: '/settings/billing',
+                      factory: $BillingRouteExtension._fromState,
+                    ),
+                  ],
+                ),
+                StatefulShellBranchData.$branch(
+                  routes: [
+                    GoRouteData.$route(
+                      path: '/settings/notifications',
+                      factory: $NotificationsRouteExtension._fromState,
+                    ),
+                  ],
+                ),
+              ],
             ),
           ],
         ),
@@ -132,11 +157,51 @@ extension $ApplicationsRouteExtension on ApplicationsRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
-extension $SettingsRouteExtension on SettingsRoute {
-  static SettingsRoute _fromState(GoRouterState state) => const SettingsRoute();
+extension $SettingsShellRouteExtension on SettingsShellRoute {
+  static SettingsShellRoute _fromState(GoRouterState state) =>
+      const SettingsShellRoute();
+}
+
+extension $GeneralRouteExtension on GeneralRoute {
+  static GeneralRoute _fromState(GoRouterState state) => const GeneralRoute();
 
   String get location => GoRouteData.$location(
-        '/settings',
+        '/settings/general',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $BillingRouteExtension on BillingRoute {
+  static BillingRoute _fromState(GoRouterState state) => const BillingRoute();
+
+  String get location => GoRouteData.$location(
+        '/settings/billing',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $NotificationsRouteExtension on NotificationsRoute {
+  static NotificationsRoute _fromState(GoRouterState state) =>
+      const NotificationsRoute();
+
+  String get location => GoRouteData.$location(
+        '/settings/notifications',
       );
 
   void go(BuildContext context) => context.go(location);

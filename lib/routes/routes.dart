@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:go_router_learn/pages/home/settings_page.dart';
 import '../pages/home/home_page.dart';
 import '../pages/home/widgets/layout_page.dart';
 import '../main.dart';
@@ -10,6 +11,10 @@ import '../pages/root/splash_page.dart';
 
 part 'routes.g.dart';
 
+final GlobalKey<NavigatorState> _shellNavigatorKey =
+    GlobalKey<NavigatorState>();
+
+//! ROOT - SPLASH ROUTE
 @TypedGoRoute<SplashRoute>(path: '/')
 class SplashRoute extends GoRouteData {
   const SplashRoute();
@@ -18,6 +23,7 @@ class SplashRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) => const SplashPage();
 }
 
+//! ROOT - LOGIN ROUTE
 @TypedGoRoute<LoginRoute>(path: '/login')
 class LoginRoute extends GoRouteData {
   const LoginRoute();
@@ -26,6 +32,7 @@ class LoginRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) => const LoginPage();
 }
 
+//! ROOT - HOME SHELL ROUTE ROUTE
 @TypedStatefulShellRoute<HomeShellRoute>(
   branches: [
     TypedStatefulShellBranch<HomeBranch>(
@@ -54,8 +61,7 @@ class LoginRoute extends GoRouteData {
 class HomeShellRoute extends StatefulShellRouteData {
   const HomeShellRoute();
 
-  static final GlobalKey<NavigatorState> $navigatorKey =
-      GlobalKey<NavigatorState>();
+  static final GlobalKey<NavigatorState> $navigatorKey = _shellNavigatorKey;
 
   @override
   Widget builder(BuildContext context, GoRouterState state,
@@ -69,23 +75,14 @@ class HomeShellRoute extends StatefulShellRouteData {
 //* branchs
 class HomeBranch extends StatefulShellBranchData {
   const HomeBranch();
-
-  static final GlobalKey<NavigatorState> $navigatorKey =
-      GlobalKey<NavigatorState>();
 }
 
 class SettingsBranch extends StatefulShellBranchData {
   const SettingsBranch();
-
-  static final GlobalKey<NavigatorState> $navigatorKey =
-      GlobalKey<NavigatorState>();
 }
 
 class ProfileBranch extends StatefulShellBranchData {
   const ProfileBranch();
-
-  static final GlobalKey<NavigatorState> $navigatorKey =
-      GlobalKey<NavigatorState>();
 }
 
 //* routes
@@ -100,10 +97,8 @@ class SettingsRoute extends GoRouteData {
   const SettingsRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) => Container(
-        alignment: Alignment.center,
-        child: const Text('Settings'),
-      );
+  Widget build(BuildContext context, GoRouterState state) =>
+      const SettingsPage();
 }
 
 class ProfileRoute extends GoRouteData {

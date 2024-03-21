@@ -60,7 +60,6 @@ RouteBase get $homeShellRoute => StatefulShellRouteData.$route(
       factory: $HomeShellRouteExtension._fromState,
       branches: [
         StatefulShellBranchData.$branch(
-          navigatorKey: HomeBranch.$navigatorKey,
           routes: [
             GoRouteData.$route(
               path: '/home',
@@ -75,7 +74,6 @@ RouteBase get $homeShellRoute => StatefulShellRouteData.$route(
           ],
         ),
         StatefulShellBranchData.$branch(
-          navigatorKey: SettingsBranch.$navigatorKey,
           routes: [
             GoRouteData.$route(
               path: '/settings',
@@ -84,7 +82,6 @@ RouteBase get $homeShellRoute => StatefulShellRouteData.$route(
           ],
         ),
         StatefulShellBranchData.$branch(
-          navigatorKey: ProfileBranch.$navigatorKey,
           routes: [
             GoRouteData.$route(
               path: '/profile',

@@ -1,6 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../main.dart';
 import 'routes.dart';
+
+final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 
 // GoRouter configuration
 final router = GoRouter(
@@ -19,4 +22,5 @@ final router = GoRouter(
     }
   },
   routes: $appRoutes,
+  navigatorKey: rootNavigatorKey,
 );

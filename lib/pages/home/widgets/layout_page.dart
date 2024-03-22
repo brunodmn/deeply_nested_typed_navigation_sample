@@ -17,7 +17,8 @@ class _LayoutPageState extends State<LayoutPage> {
   final menuItems = <MenuItem>[
     MenuItem(index: 0, name: 'Home', iconData: Icons.dashboard),
     MenuItem(index: 1, name: 'Settings', iconData: Icons.settings),
-    MenuItem(index: 2, name: 'Profile', iconData: Icons.person)
+    MenuItem(index: 2, name: 'Profile', iconData: Icons.person),
+    MenuItem(index: 3, name: 'App', iconData: Icons.app_shortcut)
   ];
 
   void _onTap(index) {

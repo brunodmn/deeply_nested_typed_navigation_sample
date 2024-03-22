@@ -66,8 +66,8 @@ RouteBase get $homeShellRoute => StatefulShellRouteData.$route(
               factory: $HomeRouteExtension._fromState,
               routes: [
                 GoRouteData.$route(
-                  path: 'applications',
-                  factory: $ApplicationsRouteExtension._fromState,
+                  path: 'app/:id',
+                  factory: $AppRouteExtension._fromState,
                 ),
               ],
             ),
@@ -139,12 +139,13 @@ extension $HomeRouteExtension on HomeRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
-extension $ApplicationsRouteExtension on ApplicationsRoute {
-  static ApplicationsRoute _fromState(GoRouterState state) =>
-      const ApplicationsRoute();
+extension $AppRouteExtension on AppRoute {
+  static AppRoute _fromState(GoRouterState state) => AppRoute(
+        state.pathParameters['id']!,
+      );
 
   String get location => GoRouteData.$location(
-        '/home/applications',
+        '/home/app/${Uri.encodeComponent(id)}',
       );
 
   void go(BuildContext context) => context.go(location);

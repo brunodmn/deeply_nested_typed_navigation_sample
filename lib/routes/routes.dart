@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:go_router_learn/pages/home/app_page.dart';
 import 'package:go_router_learn/pages/home/settings_page.dart';
 import '../pages/home/home_page.dart';
 import '../pages/home/widgets/layout_page.dart';
@@ -40,7 +41,9 @@ class LoginRoute extends GoRouteData {
     TypedStatefulShellBranch<HomeBranch>(
       routes: <TypedGoRoute<GoRouteData>>[
         TypedGoRoute<HomeRoute>(path: '/home', routes: [
-          TypedGoRoute<ApplicationsRoute>(path: 'applications'),
+          TypedGoRoute<AppRoute>(
+            path: 'app/:id',
+          ),
         ]),
       ],
     ),
@@ -64,6 +67,13 @@ class LoginRoute extends GoRouteData {
         ),
       ],
     ),
+    // TypedStatefulShellBranch<AppBranch>(
+    //   routes: <TypedGoRoute<GoRouteData>>[
+    //     TypedGoRoute<AppRoute>(
+    //       path: '/app/:id',
+    //     ),
+    //   ],
+    // ),
   ],
 )
 class HomeShellRoute extends StatefulShellRouteData {
@@ -153,6 +163,10 @@ class ProfileBranch extends StatefulShellBranchData {
   const ProfileBranch();
 }
 
+class AppBranch extends StatefulShellBranchData {
+  const AppBranch();
+}
+
 //* routes
 class HomeRoute extends GoRouteData {
   const HomeRoute();
@@ -161,13 +175,13 @@ class HomeRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) => const HomePage();
 }
 
-// class SettingsRoute extends GoRouteData {
-//   const SettingsRoute();
+class AppRoute extends GoRouteData {
+  final String id;
+  const AppRoute(this.id);
 
-//   @override
-//   Widget build(BuildContext context, GoRouterState state) =>
-//       const SettingsPage();
-// }
+  @override
+  Widget build(BuildContext context, GoRouterState state) => AppPage(id: id);
+}
 
 class ProfileRoute extends GoRouteData {
   const ProfileRoute();

@@ -14,6 +14,9 @@ class LayoutPage extends StatefulWidget {
 class _LayoutPageState extends State<LayoutPage> {
   int _selectedIndex = 0;
   String previousRoutePath = '';
+  bool showBackButton = false;
+  String pageName = '';
+  bool isDrawerOpened = false;
   final menuItems = <MenuItem>[
     MenuItem(index: 0, name: 'Home', iconData: Icons.dashboard),
     MenuItem(index: 1, name: 'Settings', iconData: Icons.settings),
@@ -30,44 +33,46 @@ class _LayoutPageState extends State<LayoutPage> {
       // using the initialLocation parameter of goBranch.
       initialLocation: index == widget.navigationShell.currentIndex,
     );
-    // setState(() {
-    //   _selectedIndex = index;
-    // });
+    if (isDrawerOpened) {
+      context.pop();
+    }
   }
 
   /// this function reads the routename, if is same as menu item, change state of selected index
   /// this will force menu to be selected
   void navigationUtils(BuildContext context) {
-    String tmpPreviousRoutePath = '';
+    final fullPath =
+        GoRouterState.of(context).fullPath ?? '/'; // i.e. /home/app/:id
+    final topRoute =
+        GoRouterState.of(context).topRoute?.path ?? ''; // i.e. app/:id
 
-    final fullPath = GoRouterState.of(context).fullPath;
+    // finds parent route, if any, to navegate to it, instead of poping the rroute stack
+    setState(() {
+      showBackButton = fullPath != topRoute;
+      previousRoutePath = fullPath.replaceFirst('/$topRoute', '');
+    });
 
-    final fullPathSplited = fullPath?.split('/') ?? [];
+    // separates the path into strings, i.i '/home/app/:id' becomes ['home', 'app']
+    final fullPathSplited = fullPath
+        .split('/')
+        .where((element) => element.isNotEmpty && !element.startsWith(':'))
+        .toList();
 
     // bellow snipped is responsible to select the right item on menu
-    if (fullPathSplited.length >= 2) {
-      final routeName = fullPathSplited[1];
+    if (fullPathSplited.isNotEmpty) {
+      // sets the page name, last item on array, params are excluded
+      setState(() {
+        pageName = fullPathSplited.last;
+      });
 
-      final routeIndex = menuItems
-          .indexWhere((element) => element.name.toLowerCase() == routeName);
-
+      final routeIndex = menuItems.indexWhere(
+          (element) => element.name.toLowerCase() == fullPathSplited[0]);
       if (routeIndex > -1) {
         setState(() {
           _selectedIndex = routeIndex;
         });
       }
     }
-
-    // bellow snipped enable back button on subroutes, instead of drawer SMALL SCREENS ONLY
-    if (fullPathSplited.length > 2) {
-      final pos = fullPath?.lastIndexOf('/') ?? -1;
-      if (pos > -1) {
-        tmpPreviousRoutePath = fullPath!.substring(0, pos);
-      }
-    }
-    setState(() {
-      previousRoutePath = tmpPreviousRoutePath;
-    });
   }
 
   // bellow snippet enable horizontal scroll if screen is less than minWidth
@@ -96,18 +101,17 @@ class _LayoutPageState extends State<LayoutPage> {
     navigationUtils(context);
     final theme = Theme.of(context);
     final isSmallScreen = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
-    final curName = GoRouterState.of(context).fullPath?.split('/').last ?? '';
 
     return Scaffold(
       appBar: !isSmallScreen
           ? null
           : AppBar(
-              leading: previousRoutePath.isEmpty
-                  ? null
-                  : BackButton(onPressed: () => context.go(previousRoutePath)),
+              leading: showBackButton
+                  ? BackButton(onPressed: () => context.go(previousRoutePath))
+                  : null,
               title: Row(
                 children: [
-                  Text(curName.toUpperCase()),
+                  Text(pageName.toUpperCase()),
                 ],
               ),
             ),
@@ -127,6 +131,10 @@ class _LayoutPageState extends State<LayoutPage> {
                 ],
               ),
             ),
+      // callback used to close drawer on item tap
+      onDrawerChanged: (isOpened) => setState(() {
+        isDrawerOpened = isOpened;
+      }),
       body: Row(
         children: [
           if (!isSmallScreen)

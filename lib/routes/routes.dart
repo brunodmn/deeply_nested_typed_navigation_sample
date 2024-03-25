@@ -188,7 +188,7 @@ class ProfileRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      ProfilePage(user: authRepo.currentUser!);
+      ProfilePage(user: authRepo.currentUser);
 }
 
 class ApplicationsRoute extends GoRouteData {

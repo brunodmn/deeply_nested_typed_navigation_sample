@@ -4,8 +4,8 @@ import '../../main.dart';
 import '../../data/models/user.dart';
 
 class ProfilePage extends StatefulWidget {
-  final User user;
-  const ProfilePage({super.key, required this.user});
+  final User? user;
+  const ProfilePage({super.key, this.user});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -25,20 +25,22 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
+  Widget _success(User user) => Column(
+        children: [
+          LoadingButton(
+            onPressed: () => logout(),
+            label: 'logout',
+            isLoading: isLoading,
+          ),
+          const Text('ProfilePage'),
+          Text('id: ${user.id}'),
+          Text('name: ${user.name}'),
+          Text('age: ${user.age}'),
+        ],
+      );
+  Widget _empty() => const Center(child: Text('User not found'));
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        LoadingButton(
-          onPressed: () => logout(),
-          label: 'logout',
-          isLoading: isLoading,
-        ),
-        const Text('ProfilePage'),
-        Text('id: ${widget.user.id}'),
-        Text('name: ${widget.user.name}'),
-        Text('age: ${widget.user.age}'),
-      ],
-    );
+    return widget.user != null ? _success(widget.user!) : _empty();
   }
 }

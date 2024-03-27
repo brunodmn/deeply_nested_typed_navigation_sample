@@ -1,7 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_router_learn/pages/home/app_page.dart';
+import 'package:go_router_learn/pages/home/app_tab_view.dart';
 import 'package:go_router_learn/pages/home/settings_page.dart';
 import '../pages/home/home_page.dart';
 import '../pages/home/widgets/layout_page.dart';
@@ -15,6 +17,9 @@ part 'routes.g.dart';
 final GlobalKey<NavigatorState> _shellNavigatorKey =
     GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> _shelSettingsNavigatorKey =
+    GlobalKey<NavigatorState>();
+
+final GlobalKey<NavigatorState> _shellAppNavigatorKey =
     GlobalKey<NavigatorState>();
 
 //! ROOT - SPLASH ROUTE
@@ -45,15 +50,17 @@ class LoginRoute extends GoRouteData {
     ),
     TypedStatefulShellBranch<SettingsBranch>(
       routes: [
-        TypedStatefulShellRoute<SettingsShellRoute>(branches: [
-          TypedStatefulShellBranch<GeneralBranch>(
-              routes: [TypedGoRoute<GeneralRoute>(path: '/settings/general')]),
-          TypedStatefulShellBranch<BillingBranch>(
-              routes: [TypedGoRoute<BillingRoute>(path: '/settings/billing')]),
-          TypedStatefulShellBranch<NotificationsBranch>(routes: [
-            TypedGoRoute<NotificationsRoute>(path: '/settings/notifications')
-          ]),
-        ])
+        TypedGoRoute<SettingsRoute>(path: '/settings', routes: [
+          TypedStatefulShellRoute<SettingsShellRoute>(branches: [
+            TypedStatefulShellBranch<GeneralBranch>(
+                routes: [TypedGoRoute<GeneralRoute>(path: 'general')]),
+            TypedStatefulShellBranch<BillingBranch>(
+                routes: [TypedGoRoute<BillingRoute>(path: 'billing')]),
+            TypedStatefulShellBranch<NotificationsBranch>(routes: [
+              TypedGoRoute<NotificationsRoute>(path: 'notifications')
+            ]),
+          ])
+        ]),
       ],
     ),
     TypedStatefulShellBranch<ProfileBranch>(
@@ -66,9 +73,14 @@ class LoginRoute extends GoRouteData {
     TypedStatefulShellBranch<AppsBranch>(
       routes: <TypedGoRoute<GoRouteData>>[
         TypedGoRoute<AppsRoute>(path: '/apps', routes: [
-          TypedGoRoute<AppRoute>(
-            path: ':id',
-          ),
+          TypedGoRoute<AppRoute>(path: ':id', routes: [
+            TypedStatefulShellRoute<AppShellRoute>(branches: [
+              TypedStatefulShellBranch<AppGeneralBranch>(
+                  routes: [TypedGoRoute<AppGeneralRoute>(path: 'general')]),
+              TypedStatefulShellBranch<AppSupporBranch>(
+                  routes: [TypedGoRoute<AppSupportRoute>(path: 'support')]),
+            ])
+          ]),
         ]),
       ],
     ),
@@ -86,6 +98,52 @@ class HomeShellRoute extends StatefulShellRouteData {
       navigationShell: navigationShell,
     );
   }
+}
+
+//* /apps/:id/
+class AppShellRoute extends StatefulShellRouteData {
+  const AppShellRoute();
+
+  static final GlobalKey<NavigatorState> $navigatorKey = _shellAppNavigatorKey;
+
+  @override
+  Widget builder(BuildContext context, GoRouterState state,
+      StatefulNavigationShell navigationShell) {
+    print('${state.pathParameters}');
+    return AppTabPage(navigationShell: navigationShell);
+  }
+}
+
+//* /apps/:id/general
+class AppGeneralBranch extends StatefulShellBranchData {
+  const AppGeneralBranch();
+}
+
+class AppGeneralRoute extends GoRouteData {
+  final String id;
+  const AppGeneralRoute(this.id);
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) => Container(
+        alignment: Alignment.center,
+        child: const Text('AppGeneralRoute'),
+      );
+}
+
+//* /apps/:id/support
+class AppSupporBranch extends StatefulShellBranchData {
+  const AppSupporBranch();
+}
+
+class AppSupportRoute extends GoRouteData {
+  final String id;
+  const AppSupportRoute(this.id);
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) => Container(
+        alignment: Alignment.center,
+        child: const Text('AppSupportRoute'),
+      );
 }
 
 class SettingsShellRoute extends StatefulShellRouteData {
@@ -197,9 +255,30 @@ class HomeRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) => const HomePage();
 }
 
+class SettingsRoute extends GoRouteData {
+  const SettingsRoute();
+  @override
+  Widget build(BuildContext context, GoRouterState state) => Container();
+
+  @override
+  String? redirect(BuildContext context, GoRouterState state) {
+    if (state.fullPath == location) {
+      return const GeneralRoute().location;
+    }
+    return null;
+  }
+}
+
 class AppRoute extends GoRouteData {
   final String id;
   const AppRoute(this.id);
+  @override
+  String? redirect(BuildContext context, GoRouterState state) {
+    if (state.matchedLocation == location) {
+      return AppGeneralRoute(id).location;
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context, GoRouterState state) => AppPage(id: id);

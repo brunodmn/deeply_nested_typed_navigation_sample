@@ -69,30 +69,36 @@ RouteBase get $homeShellRoute => StatefulShellRouteData.$route(
         ),
         StatefulShellBranchData.$branch(
           routes: [
-            StatefulShellRouteData.$route(
-              factory: $SettingsShellRouteExtension._fromState,
-              branches: [
-                StatefulShellBranchData.$branch(
-                  routes: [
-                    GoRouteData.$route(
-                      path: '/settings/general',
-                      factory: $GeneralRouteExtension._fromState,
+            GoRouteData.$route(
+              path: '/settings',
+              factory: $SettingsRouteExtension._fromState,
+              routes: [
+                StatefulShellRouteData.$route(
+                  factory: $SettingsShellRouteExtension._fromState,
+                  branches: [
+                    StatefulShellBranchData.$branch(
+                      routes: [
+                        GoRouteData.$route(
+                          path: 'general',
+                          factory: $GeneralRouteExtension._fromState,
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                StatefulShellBranchData.$branch(
-                  routes: [
-                    GoRouteData.$route(
-                      path: '/settings/billing',
-                      factory: $BillingRouteExtension._fromState,
+                    StatefulShellBranchData.$branch(
+                      routes: [
+                        GoRouteData.$route(
+                          path: 'billing',
+                          factory: $BillingRouteExtension._fromState,
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                StatefulShellBranchData.$branch(
-                  routes: [
-                    GoRouteData.$route(
-                      path: '/settings/notifications',
-                      factory: $NotificationsRouteExtension._fromState,
+                    StatefulShellBranchData.$branch(
+                      routes: [
+                        GoRouteData.$route(
+                          path: 'notifications',
+                          factory: $NotificationsRouteExtension._fromState,
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -117,6 +123,29 @@ RouteBase get $homeShellRoute => StatefulShellRouteData.$route(
                 GoRouteData.$route(
                   path: ':id',
                   factory: $AppRouteExtension._fromState,
+                  routes: [
+                    StatefulShellRouteData.$route(
+                      factory: $AppShellRouteExtension._fromState,
+                      branches: [
+                        StatefulShellBranchData.$branch(
+                          routes: [
+                            GoRouteData.$route(
+                              path: 'general',
+                              factory: $AppGeneralRouteExtension._fromState,
+                            ),
+                          ],
+                        ),
+                        StatefulShellBranchData.$branch(
+                          routes: [
+                            GoRouteData.$route(
+                              path: 'support',
+                              factory: $AppSupportRouteExtension._fromState,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -135,6 +164,23 @@ extension $HomeRouteExtension on HomeRoute {
 
   String get location => GoRouteData.$location(
         '/home',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $SettingsRouteExtension on SettingsRoute {
+  static SettingsRoute _fromState(GoRouterState state) => const SettingsRoute();
+
+  String get location => GoRouteData.$location(
+        '/settings',
       );
 
   void go(BuildContext context) => context.go(location);
@@ -245,6 +291,48 @@ extension $AppRouteExtension on AppRoute {
 
   String get location => GoRouteData.$location(
         '/apps/${Uri.encodeComponent(id)}',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $AppShellRouteExtension on AppShellRoute {
+  static AppShellRoute _fromState(GoRouterState state) => const AppShellRoute();
+}
+
+extension $AppGeneralRouteExtension on AppGeneralRoute {
+  static AppGeneralRoute _fromState(GoRouterState state) => AppGeneralRoute(
+        state.pathParameters['id']!,
+      );
+
+  String get location => GoRouteData.$location(
+        '/apps/${Uri.encodeComponent(id)}/general',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $AppSupportRouteExtension on AppSupportRoute {
+  static AppSupportRoute _fromState(GoRouterState state) => AppSupportRoute(
+        state.pathParameters['id']!,
+      );
+
+  String get location => GoRouteData.$location(
+        '/apps/${Uri.encodeComponent(id)}/support',
       );
 
   void go(BuildContext context) => context.go(location);

@@ -64,12 +64,6 @@ RouteBase get $homeShellRoute => StatefulShellRouteData.$route(
             GoRouteData.$route(
               path: '/home',
               factory: $HomeRouteExtension._fromState,
-              routes: [
-                GoRouteData.$route(
-                  path: 'app/:id',
-                  factory: $AppRouteExtension._fromState,
-                ),
-              ],
             ),
           ],
         ),
@@ -114,6 +108,20 @@ RouteBase get $homeShellRoute => StatefulShellRouteData.$route(
             ),
           ],
         ),
+        StatefulShellBranchData.$branch(
+          routes: [
+            GoRouteData.$route(
+              path: '/apps',
+              factory: $AppsRouteExtension._fromState,
+              routes: [
+                GoRouteData.$route(
+                  path: ':id',
+                  factory: $AppRouteExtension._fromState,
+                ),
+              ],
+            ),
+          ],
+        ),
       ],
     );
 
@@ -127,25 +135,6 @@ extension $HomeRouteExtension on HomeRoute {
 
   String get location => GoRouteData.$location(
         '/home',
-      );
-
-  void go(BuildContext context) => context.go(location);
-
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
-
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
-
-  void replace(BuildContext context) => context.replace(location);
-}
-
-extension $AppRouteExtension on AppRoute {
-  static AppRoute _fromState(GoRouterState state) => AppRoute(
-        state.pathParameters['id']!,
-      );
-
-  String get location => GoRouteData.$location(
-        '/home/app/${Uri.encodeComponent(id)}',
       );
 
   void go(BuildContext context) => context.go(location);
@@ -220,6 +209,42 @@ extension $ProfileRouteExtension on ProfileRoute {
 
   String get location => GoRouteData.$location(
         '/profile',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $AppsRouteExtension on AppsRoute {
+  static AppsRoute _fromState(GoRouterState state) => const AppsRoute();
+
+  String get location => GoRouteData.$location(
+        '/apps',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $AppRouteExtension on AppRoute {
+  static AppRoute _fromState(GoRouterState state) => AppRoute(
+        state.pathParameters['id']!,
+      );
+
+  String get location => GoRouteData.$location(
+        '/apps/${Uri.encodeComponent(id)}',
       );
 
   void go(BuildContext context) => context.go(location);

@@ -21,7 +21,7 @@ class _LayoutPageState extends State<LayoutPage> {
     MenuItem(index: 0, name: 'Home', iconData: Icons.dashboard),
     MenuItem(index: 1, name: 'Settings', iconData: Icons.settings),
     MenuItem(index: 2, name: 'Profile', iconData: Icons.person),
-    MenuItem(index: 3, name: 'App', iconData: Icons.app_shortcut)
+    MenuItem(index: 3, name: 'Apps', iconData: Icons.app_shortcut)
   ];
 
   void _onTap(index) {
@@ -138,18 +138,23 @@ class _LayoutPageState extends State<LayoutPage> {
       body: Row(
         children: [
           if (!isSmallScreen)
-            NavigationRail(
-                selectedIndex: _selectedIndex,
-                onDestinationSelected: _onTap,
-                labelType: NavigationRailLabelType.selected,
-                destinations: [
-                  ...menuItems.map((item) => NavigationRailDestination(
-                        icon: Icon(item.iconData),
-                        selectedIcon: Icon(item.iconData),
-                        label: Text(item.name),
-                      )),
-                ]),
-          const VerticalDivider(),
+            Row(
+              children: [
+                NavigationRail(
+                    selectedIndex: _selectedIndex,
+                    onDestinationSelected: _onTap,
+                    labelType: NavigationRailLabelType.selected,
+                    destinations: [
+                      ...menuItems.map((item) => NavigationRailDestination(
+                            icon: Icon(item.iconData),
+                            selectedIcon: Icon(item.iconData),
+                            label: Text(item.name),
+                          )),
+                    ]),
+                const VerticalDivider(),
+              ],
+            ),
+
           // This is the main content.
           Expanded(
               child: Container(

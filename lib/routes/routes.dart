@@ -40,11 +40,7 @@ class LoginRoute extends GoRouteData {
   branches: [
     TypedStatefulShellBranch<HomeBranch>(
       routes: <TypedGoRoute<GoRouteData>>[
-        TypedGoRoute<HomeRoute>(path: '/home', routes: [
-          TypedGoRoute<AppRoute>(
-            path: 'app/:id',
-          ),
-        ]),
+        TypedGoRoute<HomeRoute>(path: '/home'),
       ],
     ),
     TypedStatefulShellBranch<SettingsBranch>(
@@ -67,13 +63,15 @@ class LoginRoute extends GoRouteData {
         ),
       ],
     ),
-    // TypedStatefulShellBranch<AppBranch>(
-    //   routes: <TypedGoRoute<GoRouteData>>[
-    //     TypedGoRoute<AppRoute>(
-    //       path: '/app/:id',
-    //     ),
-    //   ],
-    // ),
+    TypedStatefulShellBranch<AppsBranch>(
+      routes: <TypedGoRoute<GoRouteData>>[
+        TypedGoRoute<AppsRoute>(path: '/apps', routes: [
+          TypedGoRoute<AppRoute>(
+            path: ':id',
+          ),
+        ]),
+      ],
+    ),
   ],
 )
 class HomeShellRoute extends StatefulShellRouteData {
@@ -105,6 +103,30 @@ class SettingsShellRoute extends StatefulShellRouteData {
 }
 
 //* TAB GENERAL
+class AppsBranch extends StatefulShellBranchData {
+  const AppsBranch();
+}
+
+class AppsRoute extends GoRouteData {
+  const AppsRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) => Container(
+        alignment: Alignment.center,
+        child: ListView(
+          children: [
+            ...apiRepo.apps.map((e) => Card(
+                  child: ListTile(
+                    title: Text(e.name),
+                    onTap: () => AppRoute(e.id).go(context),
+                  ),
+                ))
+          ],
+        ),
+      );
+}
+
+//* TAB Billing
 class GeneralBranch extends StatefulShellBranchData {
   const GeneralBranch();
 }

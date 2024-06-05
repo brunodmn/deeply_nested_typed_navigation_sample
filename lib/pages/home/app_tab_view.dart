@@ -5,6 +5,7 @@ class AppTabPage extends StatelessWidget {
   final StatefulNavigationShell navigationShell;
   const AppTabPage({super.key, required this.navigationShell});
   void _onTap(index) {
+    print('navigationShell.goBranch : ${navigationShell.currentIndex}');
     navigationShell.goBranch(
       index,
       // A common pattern when using bottom navigation bars is to support

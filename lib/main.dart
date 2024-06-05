@@ -1,20 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
-import 'package:go_router_learn/data/repository/fake_api_repos.dart';
+import 'package:go_router_learn/data/repository/fake_api_repo.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
-import 'data/repository/auth_repo.dart';
 import 'routes/pages.dart';
 
-final authRepo = AuthRepo();
 final apiRepo = ApiRepo();
 void main() {
   usePathUrlStrategy();
-  authRepo.authStateChanges.listen(
-    (user) {
-      router.refresh();
-    },
-  );
   runApp(const MainApp());
 }
 

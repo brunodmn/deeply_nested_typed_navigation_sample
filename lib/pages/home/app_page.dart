@@ -32,18 +32,7 @@ class _AppPageState extends State<AppPage> {
     });
   }
 
-  logout() async {
-    setState(() {
-      isLoading = true;
-    });
-    await authRepo.logout();
-    if (context.mounted) {
-      setState(() {
-        isLoading = false;
-      });
-    }
-  }
-
+  
   Widget _loading() => const Center(child: CircularProgressIndicator());
   Widget _empty() => const Center(child: Text('App not ound'));
   Widget _success() => Column(

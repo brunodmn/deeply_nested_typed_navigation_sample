@@ -158,13 +158,13 @@ class _LayoutPageState extends State<LayoutPage> {
           // This is the main content.
           Expanded(
               child: Container(
-            color: theme.colorScheme.surfaceVariant,
+            color: theme.colorScheme.surfaceContainerHighest,
             child: Center(
                 child: ConstrainedBox(
                     constraints:
                         const BoxConstraints(maxWidth: 1200, minWidth: 400),
                     child: Container(
-                        color: theme.colorScheme.background,
+                        color: theme.colorScheme.surfaceContainerLowest,
                         child: widget.navigationShell))),
           ))
         ],

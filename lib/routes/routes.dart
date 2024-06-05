@@ -8,8 +8,6 @@ import 'package:go_router_learn/pages/home/settings_page.dart';
 import '../pages/home/home_page.dart';
 import '../pages/home/widgets/layout_page.dart';
 import '../main.dart';
-import '../pages/root/login_page.dart';
-import '../pages/home/profile_page.dart';
 import '../pages/root/splash_page.dart';
 
 part 'routes.g.dart';
@@ -31,14 +29,6 @@ class SplashRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) => const SplashPage();
 }
 
-//! ROOT - LOGIN ROUTE
-@TypedGoRoute<LoginRoute>(path: '/login')
-class LoginRoute extends GoRouteData {
-  const LoginRoute();
-
-  @override
-  Widget build(BuildContext context, GoRouterState state) => const LoginPage();
-}
 
 //! ROOT - HOME SHELL ROUTE ROUTE
 @TypedStatefulShellRoute<HomeShellRoute>(
@@ -63,13 +53,7 @@ class LoginRoute extends GoRouteData {
         ]),
       ],
     ),
-    TypedStatefulShellBranch<ProfileBranch>(
-      routes: <TypedGoRoute<GoRouteData>>[
-        TypedGoRoute<ProfileRoute>(
-          path: '/profile',
-        ),
-      ],
-    ),
+    
     TypedStatefulShellBranch<AppsBranch>(
       routes: <TypedGoRoute<GoRouteData>>[
         TypedGoRoute<AppsRoute>(path: '/apps', routes: [
@@ -239,9 +223,6 @@ class SettingsBranch extends StatefulShellBranchData {
   const SettingsBranch();
 }
 
-class ProfileBranch extends StatefulShellBranchData {
-  const ProfileBranch();
-}
 
 class AppBranch extends StatefulShellBranchData {
   const AppBranch();
@@ -284,13 +265,7 @@ class AppRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) => AppPage(id: id);
 }
 
-class ProfileRoute extends GoRouteData {
-  const ProfileRoute();
 
-  @override
-  Widget build(BuildContext context, GoRouterState state) =>
-      ProfilePage(user: authRepo.currentUser);
-}
 
 class ApplicationsRoute extends GoRouteData {
   const ApplicationsRoute();

@@ -8,7 +8,6 @@ part of 'routes.dart';
 
 List<RouteBase> get $appRoutes => [
       $splashRoute,
-      $loginRoute,
       $homeShellRoute,
     ];
 
@@ -22,28 +21,6 @@ extension $SplashRouteExtension on SplashRoute {
 
   String get location => GoRouteData.$location(
         '/',
-      );
-
-  void go(BuildContext context) => context.go(location);
-
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
-
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
-
-  void replace(BuildContext context) => context.replace(location);
-}
-
-RouteBase get $loginRoute => GoRouteData.$route(
-      path: '/login',
-      factory: $LoginRouteExtension._fromState,
-    );
-
-extension $LoginRouteExtension on LoginRoute {
-  static LoginRoute _fromState(GoRouterState state) => const LoginRoute();
-
-  String get location => GoRouteData.$location(
-        '/login',
       );
 
   void go(BuildContext context) => context.go(location);
@@ -103,14 +80,6 @@ RouteBase get $homeShellRoute => StatefulShellRouteData.$route(
                   ],
                 ),
               ],
-            ),
-          ],
-        ),
-        StatefulShellBranchData.$branch(
-          routes: [
-            GoRouteData.$route(
-              path: '/profile',
-              factory: $ProfileRouteExtension._fromState,
             ),
           ],
         ),
@@ -238,23 +207,6 @@ extension $NotificationsRouteExtension on NotificationsRoute {
 
   String get location => GoRouteData.$location(
         '/settings/notifications',
-      );
-
-  void go(BuildContext context) => context.go(location);
-
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
-
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
-
-  void replace(BuildContext context) => context.replace(location);
-}
-
-extension $ProfileRouteExtension on ProfileRoute {
-  static ProfileRoute _fromState(GoRouterState state) => const ProfileRoute();
-
-  String get location => GoRouteData.$location(
-        '/profile',
       );
 
   void go(BuildContext context) => context.go(location);

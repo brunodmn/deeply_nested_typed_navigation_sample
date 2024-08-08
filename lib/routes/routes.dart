@@ -29,7 +29,6 @@ class SplashRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) => const SplashPage();
 }
 
-
 //! ROOT - HOME SHELL ROUTE ROUTE
 @TypedStatefulShellRoute<HomeShellRoute>(
   branches: [
@@ -53,7 +52,6 @@ class SplashRoute extends GoRouteData {
         ]),
       ],
     ),
-    
     TypedStatefulShellBranch<AppsBranch>(
       routes: <TypedGoRoute<GoRouteData>>[
         TypedGoRoute<AppsRoute>(path: '/apps', routes: [
@@ -223,7 +221,6 @@ class SettingsBranch extends StatefulShellBranchData {
   const SettingsBranch();
 }
 
-
 class AppBranch extends StatefulShellBranchData {
   const AppBranch();
 }
@@ -255,7 +252,7 @@ class AppRoute extends GoRouteData {
   const AppRoute(this.id);
   @override
   String? redirect(BuildContext context, GoRouterState state) {
-    if (state.matchedLocation == location) {
+    if (state.uri.path == location) {
       return AppGeneralRoute(id).location;
     }
     return null;
@@ -264,8 +261,6 @@ class AppRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) => AppPage(id: id);
 }
-
-
 
 class ApplicationsRoute extends GoRouteData {
   const ApplicationsRoute();
